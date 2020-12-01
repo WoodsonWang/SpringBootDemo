@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Title</title>
+    <style>
+        .box{
+            width: 800px;
+            height:500px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            margin-top: -250px;
+            margin-left: -400px;
+            border: 1px solid #000;
+
+            box-sizing: border-box;
+        }
+        span{
+            margin:540px 320px;
+        }
+        img{
+            width:200px;
+            height:200px;
+        }
+    </style>
+
+</head>
+<body>
+<!--拖放盒子-->
+<div id="oBox" class="box">
+    <span>拖动图片放在此处...</span>
+</div>
+
+<script>
+    var oBox = document.getElementById("oBox");
+    var aSpan = oBox.getElementsByTagName("span")[0];
+
+
+    oBox.addEventListener("dragenter",drag);  //当元素拖动到这个box上时要执行的事件
+    oBox.addEventListener("dragover",drag);  //当元素拖动悬停到这个box上时要执行的事件
+    oBox.addEventListener("dragleave",drag);  //当元素拖动离开这个box时要执行的事件
+    oBox.addEventListener("drop",drag); //当元素拖动着在目标对象上方释放/松手(放置内容的时候必须要阻止默认事件,否则不会执行)
+
+    function drag(e){
+        e.preventDefault();
+        //事件分流
+        switch(e.type){
+            case "dragenter":
+                aSpan.style.display="none"; //当拖动图片进去的时候里边内容设置为none
+                break;
+            case "dragover":
+                break;
+            case "dragleave":
+                aSpan.style.display="block"; //当拖动图片进去的时候里边内容设置为block
+                break;
+            case "drop":
+                // e.dataTransfer  表示被拖动的数据
+                // e.dataTransfer.files  表示被拖动的图片
+
+                console.log("已放置内容");
+
+                var imgFiles = e.dataTransfer.files
+
+                for(var i = 0 ; i<imgFiles.length;i++){
+                    //新建一个文件读取器, HTML5新特性
+                    var imgRead = new FileReader;
+
+                    /**
+                     *  FileReader 对象有四个方法
+                     abort      none    中断读取
+                     readAsBinaryString     file    将文件转化为二进制码
+                     readAsDataURL  file    将文件读取为DataURL
+                     readAsText     file,[encoding]     将文件读取为文本
+                     ---------------------
+                     * */
+                    imgRead.readAsDataURL(imgFiles[i]); // 将读取的文件转换为二进制码
+
+                    //当文件读取成功的时候
+                    imgRead.onload = function(){
+                        var oImg = new Image(); //创建一个图片对象
+                        oImg.src = this.result; //将读取的数据赋值给图片的src
+                        oBox.appendChild(oImg); //将图片追加至box盒子内展现出来
+                        console.log(oImg);
+                    }
+                }
+                break;
+        }
+    }
+
+
+</script>
+</body>
+</html>
+

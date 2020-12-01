@@ -3,11 +3,17 @@ package com.example.springbootdemo.controller;
 import com.example.springbootdemo.bean.User;
 import com.example.springbootdemo.dao.UserDao;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.Constants;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.util.ResourceUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.List;
 
 
@@ -19,6 +25,24 @@ public class HelloController {
 
     @RequestMapping("/login")
     public String loginView(){
+        Resource resource = new ClassPathResource("");
+
+        try {
+            System.out.println(resource.getFile().getAbsoluteFile());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        String path = null;
+        String path2 = null;
+        try {
+            path = ResourceUtils.getURL("file:").getPath();
+//            /Users/yy/IdeaProjects/springbootdemo/target/classes/
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        System.out.println("====="+path);
+
         return "login";
     }
 

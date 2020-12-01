@@ -20,10 +20,18 @@
 
     <dependencies>
 
+<!--        oracle 数据库 -->
+<!--        <dependency>-->
+<!--            <groupId>oracle</groupId>-->
+<!--            <artifactId>oracle-jdbc</artifactId>-->
+<!--            <version>1.0.0</version>-->
+<!--        </dependency>-->
+
+    <!--mysql数据库-->
         <dependency>
-            <groupId>oracle</groupId>
-            <artifactId>oracle-jdbc</artifactId>
-            <version>1.0.0</version>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <scope>runtime</scope>
         </dependency>
 
         <dependency>

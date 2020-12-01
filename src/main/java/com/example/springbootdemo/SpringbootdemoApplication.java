@@ -16,9 +16,10 @@ public class SpringbootdemoApplication {
     }
 
     /**
-     * 文件上传配置
+     * 文件上传配置大小限制
      * @return
      */
+    /*
     @Bean
     public MultipartConfigElement multipartConfigElement() {
         MultipartConfigFactory factory = new MultipartConfigFactory();
@@ -28,5 +29,7 @@ public class SpringbootdemoApplication {
         factory.setMaxRequestSize(DataSize.ofGigabytes(10l));
         return factory.createMultipartConfig();
     }
+
+     */
 
 }

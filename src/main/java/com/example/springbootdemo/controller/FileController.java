@@ -1,6 +1,8 @@
 package com.example.springbootdemo.controller;
 
 
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -9,10 +11,29 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
+import java.net.InetAddress;
 import java.net.URLEncoder;
+import java.net.UnknownHostException;
+
+
 
 @Controller
+@PropertySource({"classpath:application.properties"})
 public class FileController {
+    public static String UPLOAD_IP = "";
+    public static final String PATH = "upload/";
+    @Value("${web.upload-path}")
+    private String filepath;
+
+    static {
+
+        try {
+            String IP = InetAddress.getLocalHost().getHostAddress();
+            UPLOAD_IP = "http://"+IP+":8080/"+PATH;
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        }
+    }
 
     /**
      * 实现文件上传
@@ -23,11 +44,13 @@ public class FileController {
     @ResponseBody
     public String fileUpload(@RequestParam("fileName")MultipartFile file){
         String fileName = file.getOriginalFilename();
-        File dest = new File("/Users/yy/Documents/upload" + "/" + fileName);
+
+        File dest = new File(filepath + PATH + fileName);
+        System.out.println(dest);
         try {
             file.transferTo(dest);
             System.out.println("文件上传成功");
-            return "true";
+            return UPLOAD_IP+fileName;
         } catch (IOException e) {
             e.printStackTrace();
             return "false";
@@ -39,6 +62,9 @@ public class FileController {
     @RequestMapping("/fileDownload")
     @ResponseBody
     public String fileDownload(String filename, HttpServletResponse response){
+        System.out.println(filepath);
+
+
         File file = new File("/Users/yy/Documents/upload"+"/"+filename);
         // 配置文件下载
         response.setHeader("content-type", "application/octet-stream");

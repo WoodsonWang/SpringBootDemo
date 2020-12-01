@@ -65,7 +65,7 @@
                     $("#msg").text("访问服务器错误，请重试！");
                 },
                 success: function(result){
-
+                    $("#msg").text(result);
                     console.log(result);
                 },
                 xhr: function () {
